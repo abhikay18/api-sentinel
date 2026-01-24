@@ -350,11 +350,6 @@ This mirrors real-world production API security systems used by major platforms.
 
 ---
 
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
 
 ## 👤 Author
 
