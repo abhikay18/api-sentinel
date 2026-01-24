@@ -122,7 +122,7 @@ API Sentinel protects your APIs from abuse and abnormal traffic patterns through
 ## 🛠️ Tech Stack
 
 ### Backend
-- **Java 17** - Modern Java features and performance
+- **Java 21** - Modern Java features and performance
 - **Spring Boot** - Application framework
 - **Spring MVC** - Web layer
 - **Spring Data JPA** - Data persistence
