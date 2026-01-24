@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout}">
+<body>
+
+<div th:fragment="content">
+
+    <!-- BACK -->
+    <div class="back-btn">
+        <a href="/admin/dashboard">
+            <button class="secondary">← Back to Dashboard</button>
+        </a>
+    </div>
+
+    <div class="card">
+        <h2>Abuse Monitor</h2>
+        <p>Temporarily blocked API keys due to suspicious or abusive behavior.</p>
+
+        <table>
+            <thead>
+            <tr>
+                <th>API Key</th>
+                <th>Decision</th>
+                <th>Blocked Until</th>
+                <th>AI Score</th>
+                <th>Risk</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="b : ${blockedList}">
+
+                <!-- API KEY -->
+                <td th:text="${b.value}"></td>
+
+                <!-- DECISION + EXPLANATION -->
+                <td>
+                    <!-- SYSTEM -->
+                    <div th:if="${b.detectionSource == 'SYSTEM'}">
+                        <strong>System</strong><br/>
+                        <span th:text="${b.reason}"></span>
+                    </div>
+
+                    <!-- AI -->
+                    <div th:if="${b.detectionSource == 'AI'}">
+                        <strong>AI Decision</strong><br/>
+
+                        <span class="ai-badge"
+                              title="Blocked by AI analysis">
+                            AI Block
+                        </span>
+
+                        <div class="ai-explanation"
+                             th:text="${b.reason}">
+                        </div>
+                    </div>
+
+                </td>
+
+                <!-- BLOCKED UNTIL -->
+                <td th:text="${#temporals.format(b.blockedUntil,'dd MMM yyyy HH:mm')}"></td>
+
+                <!-- AI SCORE -->
+                <td>
+                    <div th:if="${b.aiScore != null}" class="confidence-bar">
+                        <div class="fill"
+                             th:style="'width:' + (${b.aiScore} * 100) + '%'"
+                             th:classappend="
+                                ${b.aiScore >= 0.8} ? 'high' :
+                                (${b.aiScore >= 0.5} ? 'medium' : 'low')">
+                        </div>
+                    </div>
+                    <small th:text="${b.aiScore != null ? #numbers.formatDecimal(b.aiScore,1,2) : 'N/A'}"></small>
+                </td>
+
+                <!-- RISK -->
+                <td>
+                    <span th:if="${b.aiScore != null}"
+                          th:text="${b.aiScore >= 0.8 ? 'HIGH' :
+                                    (b.aiScore >= 0.5 ? 'MEDIUM' : 'LOW')}">
+                    </span>
+                    <span th:if="${b.aiScore == null}">N/A</span>
+                </td>
+
+                <!-- ACTIONS -->
+                <td>
+                    <button class="secondary"
+                            th:if="${b.detectionSource == 'AI'}"
+                            th:data-value="${b.value}"
+                            onclick="showTrend(this.dataset.value)">
+                        View AI Trend
+                    </button>
+
+                    <form th:action="@{'/admin/abuse/' + ${b.id} + '/unblock'}"
+                          method="post" style="margin-top:6px">
+                        <button class="danger">Unblock</button>
+                    </form>
+
+                    <form th:action="@{'/admin/baseline/' + ${b.value} + '/reset'}"
+                          method="post" style="margin-top:6px">
+                        <button class="secondary">Reset Baseline</button>
+                    </form>
+
+                    <form th:action="@{'/admin/baseline/' + ${b.value} + '/retrain'}"
+                          method="post" style="margin-top:6px">
+                        <button class="secondary">Retrain AI</button>
+                    </form>
+
+                </td>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- TREND MODAL -->
+    <div id="trendModal"
+         style="display:none;
+                position:fixed;
+                top:10%;
+                left:20%;
+                width:60%;
+                background:#fff;
+                padding:20px;
+                border-radius:8px;
+                box-shadow:0 0 20px rgba(0,0,0,0.3);
+                z-index:9999;">
+
+        <h3>AI Risk Trend</h3>
+        <p style="font-size:13px;color:#666;margin-bottom:10px">
+            This chart shows AI risk evaluation over time.
+            Scores above <b>0.65</b> indicate suspicious behavior.
+            Scores above <b>0.85</b> may trigger automatic blocking.
+        </p>
+        <canvas id="trendChart" height="120"></canvas>
+        <br/>
+        <button onclick="closeTrend()">Close</button>
+    </div>
+
+    <!-- JS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        let chart;
+
+        function showTrend(apiKey) {
+            fetch(`/admin/ai/scores/${apiKey}`)
+                .then(res => res.json())
+                .then(data => {
+
+                    if (!data || data.length === 0) {
+                        alert("No AI history available yet");
+                        return;
+                    }
+
+                    const labels = data.map(d => d.time).reverse();
+                    const scores = data.map(d => d.score).reverse();
+
+                    const ctx = document.getElementById('trendChart');
+
+                    if (chart) chart.destroy();
+
+                    chart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels,
+                            datasets: [{
+                                label: 'AI Risk Score',
+                                data: scores,
+                                borderWidth: 2,
+                                tension: 0.3,
+                                fill: true
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    min: 0,
+                                    max: 1
+                                }
+                            },
+                            plugins: {
+                                annotation: {
+                                    annotations: {
+                                        warn: {
+                                            type: 'line',
+                                            yMin: 0.65,
+                                            yMax: 0.65,
+                                            borderColor: 'orange',
+                                            borderWidth: 2,
+                                            label: {
+                                                content: 'Warning Threshold',
+                                                enabled: true
+                                            }
+                                        },
+                                        danger: {
+                                            type: 'line',
+                                            yMin: 0.85,
+                                            yMax: 0.85,
+                                            borderColor: 'red',
+                                            borderWidth: 2,
+                                            label: {
+                                                content: 'Block Threshold',
+                                                enabled: true
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+
+                    document.getElementById('trendModal').style.display = 'block';
+                });
+        }
+
+        function closeTrend() {
+            document.getElementById('trendModal').style.display = 'none';
+        }
+    </script>
+
+
+</div>
+</body>
+</html>

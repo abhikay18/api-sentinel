@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:fragment="layout">
+
+<head>
+    <title>API Governance Admin</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<header class="header">
+    <h1>API Governance Platform</h1>
+</header>
+
+<nav class="nav">
+    <a href="/admin/dashboard">Dashboard</a>
+    <a href="/admin/api-keys">API Keys</a>
+    <a href="/admin/rate-limits">Rate Limits</a>
+    <a href="/admin/abuse">Abuse Monitor</a>
+    <a href="/logout" class="logout">Logout</a>
+</nav>
+
+<main class="content">
+    <!-- PAGE CONTENT GOES HERE -->
+    <div th:replace="~{::content}"></div>
+</main>
+
+</body>
+</html>

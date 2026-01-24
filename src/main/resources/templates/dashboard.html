@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout}">
+
+<div th:fragment="content">
+
+    <div class="card">
+        <h2>Admin Dashboard</h2>
+        <p>Manage API keys, rate limits, and abuse controls from here.</p>
+
+        <div style="margin-top: 20px;">
+            <a href="/admin/api-keys">
+                <button>Manage API Keys</button>
+            </a>
+
+            <a href="/admin/rate-limits" style="margin-left: 10px;">
+                <button>Configure Rate Limits</button>
+            </a>
+
+            <a href="/admin/abuse" style="margin-left: 10px;">
+                <button class="danger">Abuse Monitor</button>
+            </a>
+        </div>
+    </div>
+
+</div>
+
+</html>

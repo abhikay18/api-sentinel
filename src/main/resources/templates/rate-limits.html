@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout}">
+<body>
+
+<div th:fragment="content">
+
+    <!-- Back Button -->
+    <div class="back-btn">
+        <a href="/admin/dashboard">
+            <button class="secondary">← Back to Dashboard</button>
+        </a>
+    </div>
+
+    <div class="card">
+        <h2>Rate Limit Configuration</h2>
+        <p>Configure API rate limits per plan. Changes apply immediately.</p>
+
+        <table>
+            <tr>
+                <th>Plan</th>
+                <th>Max Requests</th>
+                <th>Window (seconds)</th>
+                <th>Action</th>
+            </tr>
+
+            <tr th:each="p : ${policies}">
+                <form th:action="@{'/admin/rate-limits/' + ${p.id}}" method="post">
+                    <td th:text="${p.plan}"></td>
+                    <td>
+                        <input type="number"
+                               name="maxRequests"
+                               min="1"
+                               th:value="${p.maxRequests}" />
+                    </td>
+                    <td>
+                        <input type="number"
+                               name="windowSeconds"
+                               min="1"
+                               th:value="${p.windowSeconds}" />
+                    </td>
+                    <td>
+                        <button type="submit">Update</button>
+                    </td>
+                </form>
+            </tr>
+        </table>
+    </div>
+
+</div>
+
+<!-- Layout Wrapper -->
+
+
+
+</body>
+</html>

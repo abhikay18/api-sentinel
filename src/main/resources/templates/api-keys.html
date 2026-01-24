@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout}">
+<body>
+
+<div th:fragment="content">
+
+    <div class="back-btn">
+        <a href="/admin/dashboard">
+            <button class="secondary">← Back to Dashboard</button>
+        </a>
+    </div>
+
+    <div class="card">
+        <h2>API Key Management</h2>
+
+        <form method="post" th:action="@{/admin/api-keys}">
+            <label>Plan:</label>
+            <select name="plan">
+                <option th:each="p : ${plans}" th:value="${p}" th:text="${p}"></option>
+            </select>
+            <button type="submit">Create API Key</button>
+        </form>
+
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Key</th>
+                <th>Plan</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+
+            <tr th:each="key : ${keys}">
+                <td th:text="${key.id}"></td>
+                <td th:text="${key.keyValue}"></td>
+                <td th:text="${key.plan}"></td>
+                <td th:text="${key.active ? 'ACTIVE' : 'REVOKED'}"></td>
+                <td>
+                    <form th:if="${key.active}"
+                          th:action="@{'/admin/api-keys/' + ${key.id} + '/revoke'}"
+                          method="post">
+                        <button class="danger">Revoke</button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</div>
+
+
+
+
+</body>
+</html>
