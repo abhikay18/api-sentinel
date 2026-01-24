@@ -134,6 +134,7 @@ API Sentinel protects your APIs from abuse and abnormal traffic patterns through
 - **Redis** - Caching and rate limiting
 
 ### AI & Analytics
+- **Isolation Forest** - Anomaly detection algorithm
 - Baseline deviation analysis
 - Explainable AI scoring engine
 - Adaptive threshold algorithms
@@ -163,8 +164,41 @@ api-sentinel/
 ├── domain/                # JPA entities
 ├── repository/            # Data access layer
 ├── templates/             # Thymeleaf UI templates
-└── ApiGovernanceApplication.java
+├── ApiGovernanceApplication.java
+└── ai-ml-service/         # Standalone ML module
+    ├── app.py             # FastAPI application
+    ├── model.py           # Isolation Forest model
+    └── requirements.txt   # Python dependencies
 ```
+
+---
+
+## 🤖 AI / ML Module
+
+The machine learning logic is **intentionally isolated** in a separate module (`ai-ml-service/`) to ensure:
+
+- ✅ **Backend-first system design** - Spring Boot handles all core logic
+- ✅ **Loose coupling** between AI and enforcement systems
+- ✅ **Independent ML experimentation** and deployment
+- ✅ **Technology flexibility** - Use Python's rich ML ecosystem
+
+**The backend can operate fully without the ML module.**
+
+### ML Architecture
+
+The AI service uses **Isolation Forest**, an unsupervised anomaly detection algorithm that:
+- Identifies outliers in multi-dimensional feature space
+- Requires no labeled training data
+- Provides anomaly scores for risk assessment
+- Efficiently handles high-dimensional data
+
+**Features analyzed:**
+- `requestsPerMinute` - Traffic volume
+- `errorCount` - Error rate
+- `uniqueEndpoints` - Endpoint diversity
+- `avgRequestIntervalMs` - Request timing patterns
+
+The model returns both a binary anomaly flag and a continuous risk score for explainability.
 
 ---
 
@@ -192,6 +226,8 @@ api-sentinel/
 - Redis 6+
 - Maven 3.8+
 - Docker (optional, for Redis)
+- Python 3.8+ (for AI/ML module)
+- pip (Python package manager)
 
 ### Installation
 
@@ -231,6 +267,34 @@ api-sentinel/
    ```
    http://localhost:8080/admin
    ```
+
+### Running the AI/ML Service (Optional)
+
+The AI service is optional but recommended for enhanced anomaly detection.
+
+1. **Navigate to the AI service directory**
+   ```bash
+   cd ai-ml-service
+   ```
+
+2. **Install Python dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Start the FastAPI service**
+   ```bash
+   uvicorn app:app --port 8000
+   ```
+
+4. **Verify the AI service is running**
+   ```bash
+   curl http://localhost:8000/health
+   ```
+   
+   Expected response: `{"status": "UP"}`
+
+The Spring Boot application will automatically connect to the AI service if it's running on port 8000.
 
 ### Testing
 
