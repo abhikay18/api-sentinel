@@ -122,7 +122,7 @@ API Sentinel protects your APIs from abuse and abnormal traffic patterns through
 ## 🛠️ Tech Stack
 
 ### Backend
-- **Java 21** - Modern Java features and performance
+- **Java 21** - Latest LTS with modern Java features and performance
 - **Spring Boot** - Application framework
 - **Spring MVC** - Web layer
 - **Spring Data JPA** - Data persistence
@@ -187,9 +187,9 @@ api-sentinel/
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Java 17 or higher
+- Java 21 or higher
 - PostgreSQL 12+
-- Redis 6+
+- Docker & Docker Compose (for Redis)
 - Maven 3.8+
 
 ### Installation
@@ -200,23 +200,82 @@ api-sentinel/
    cd api-sentinel
    ```
 
-2. **Configure application properties**
+2. **Start Redis using Docker**
+   ```bash
+   docker run -d \
+     --name api-sentinel-redis \
+     -p 6379:6379 \
+     -v redis-data:/data \
+     redis:7-alpine \
+     redis-server --appendonly yes
+   ```
+   
+   Or use Docker Compose (recommended):
+   
+   Create a `docker-compose.yml` file:
+   ```yaml
+   version: '3.8'
+   
+   services:
+     redis:
+       image: redis:7-alpine
+       container_name: api-sentinel-redis
+       ports:
+         - "6379:6379"
+       volumes:
+         - redis-data:/data
+       command: redis-server --appendonly yes
+       restart: unless-stopped
+       healthcheck:
+         test: ["CMD", "redis-cli", "ping"]
+         interval: 10s
+         timeout: 5s
+         retries: 5
+   
+   volumes:
+     redis-data:
+       driver: local
+   ```
+   
+   Then start Redis:
+   ```bash
+   docker-compose up -d
+   ```
+   
+   Verify Redis is running:
+   ```bash
+   docker ps
+   # You should see api-sentinel-redis running
+   
+   # Test Redis connection
+   docker exec -it api-sentinel-redis redis-cli ping
+   # Should return: PONG
+   ```
+
+3. **Configure application properties**
    ```bash
    cp src/main/resources/application.properties.example src/main/resources/application.properties
    # Edit application.properties with your database and Redis credentials
    ```
+   
+   Example Redis configuration in `application.properties`:
+   ```properties
+   spring.redis.host=localhost
+   spring.redis.port=6379
+   spring.redis.timeout=2000ms
+   ```
 
-3. **Build the project**
+4. **Build the project**
    ```bash
    mvn clean install
    ```
 
-4. **Run the application**
+5. **Run the application**
    ```bash
    mvn spring-boot:run
    ```
 
-5. **Access the admin dashboard**
+6. **Access the admin dashboard**
    ```
    http://localhost:8080/admin
    ```
