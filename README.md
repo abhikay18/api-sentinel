@@ -8,7 +8,6 @@ A backend-focused API governance and security platform built with Spring Boot th
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-brightgreen.svg)](https://spring.io/projects/spring-boot)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Latest-blue.svg)](https://www.postgresql.org/)
 [![Redis](https://img.shields.io/badge/Redis-Latest-red.svg)](https://redis.io/)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ---
 
@@ -24,7 +23,6 @@ A backend-focused API governance and security platform built with Spring Boot th
 - [Getting Started](#-getting-started)
 - [Design Philosophy](#-design-philosophy)
 - [Future Enhancements](#-future-enhancements)
-- [License](#-license)
 - [Author](#-author)
 
 ---
@@ -348,12 +346,6 @@ This mirrors real-world production API security systems used by major platforms.
 - Created comprehensive **admin tooling** for real-time monitoring and control
 - Followed **clean architecture** principles and separation of concerns
 - Demonstrated expertise in **backend security** and **distributed systems**
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
