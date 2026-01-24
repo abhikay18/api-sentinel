@@ -14,17 +14,18 @@ A backend-focused API governance and security platform built with Spring Boot th
 
 ## 📋 Table of Contents
 
-- [Overview](#overview)
-- [Key Features](#key-features)
-- [Architecture](#architecture)
-- [Tech Stack](#tech-stack)
-- [Project Structure](#project-structure)
-- [Screenshots](#screenshots)
-- [Getting Started](#getting-started)
-- [Design Philosophy](#design-philosophy)
-- [Future Enhancements](#future-enhancements)
-- [License](#license)
-- [Author](#author)
+- [Overview](#-overview)
+- [Key Features](#-key-features)
+- [Architecture](#-architecture)
+- [Tech Stack](#-tech-stack)
+- [Project Structure](#-project-structure)
+- [AI / ML Module](#-ai--ml-module)
+- [Screenshots](#-screenshots)
+- [Getting Started](#-getting-started)
+- [Design Philosophy](#-design-philosophy)
+- [Future Enhancements](#-future-enhancements)
+- [License](#-license)
+- [Author](#-author)
 
 ---
 
@@ -350,6 +351,11 @@ This mirrors real-world production API security systems used by major platforms.
 
 ---
 
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
 
 ## 👤 Author
 
