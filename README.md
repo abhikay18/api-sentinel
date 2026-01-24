@@ -302,10 +302,25 @@ Run the test suite:
 mvn test
 ```
 
-Trigger AI anomaly detection (testing endpoint):
-```bash
-curl -X POST http://localhost:8080/test/trigger-anomaly?apiKey=YOUR_API_KEY
+**Test API endpoints** (use PowerShell or tools like Postman):
+
+Normal API call:
+```powershell
+iwr http://localhost:8080/api/test `
+    -Headers @{ "X-API-KEY" = "api-key" }
 ```
+
+Trigger AI anomaly detection (testing endpoint):
+```powershell
+iwr http://localhost:8080/api/test-ai `
+    -Headers @{ "X-API-KEY" = "api-key" }
+```
+
+> **Note:** Replace `api-key` with your actual API key. On Linux/Mac, use `curl` instead:
+> ```bash
+> curl -H "X-API-KEY: api-key" http://localhost:8080/api/test
+> curl -H "X-API-KEY: api-key" http://localhost:8080/api/test-ai
+> ```
 
 ---
 
