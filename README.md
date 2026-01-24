@@ -155,19 +155,78 @@ API Sentinel protects your APIs from abuse and abnormal traffic patterns through
 
 ```
 api-sentinel/
-├── security/              # API filters & enforcement
-├── rate_limit/            # Rate limiting engine
-├── abuse/                 # Blocking & cooldown logic
-├── ai/                    # AI analysis & baselines
-├── controller/admin/      # Admin controllers
-├── domain/                # JPA entities
-├── repository/            # Data access layer
-├── templates/             # Thymeleaf UI templates
-├── ApiGovernanceApplication.java
-└── ai-ml-service/         # Standalone ML module
-    ├── app.py             # FastAPI application
-    ├── model.py           # Isolation Forest model
-    └── requirements.txt   # Python dependencies
+├── src/main/java/com/abhishek/apigovernance/
+│   ├── abuse/
+│   │   └── AbuseDetectionService.java
+│   ├── ai/
+│   │   └── dto/
+│   │       ├── ApiUsageFeatures.java
+│   │       ├── AiAbuseDetectionService.java
+│   │       ├── AiPredictionResponse.java
+│   │       ├── ApiUsageFeatureCollector.java
+│   │       └── BaselineLearningService.java
+│   ├── config/
+│   │   └── RedisConfig.java
+│   ├── controller/
+│   │   ├── admin/
+│   │   │   ├── AbuseAdminController.java
+│   │   │   ├── AdminAiScoreController.java
+│   │   │   ├── AdminBaselineController.java
+│   │   │   ├── ApiKeyAdminController.java
+│   │   │   ├── DashboardController.java
+│   │   │   ├── LoginController.java
+│   │   │   └── RateLimitAdminController.java
+│   │   └── api/
+│   │       └── TestApiController.java
+│   ├── domain/
+│   │   ├── AiScoreEvent.java
+│   │   ├── ApiKey.java
+│   │   ├── ApiPlan.java
+│   │   ├── ApiUsageBaseline.java
+│   │   ├── BlockedEntity.java
+│   │   ├── RateLimitPolicy.java
+│   │   ├── Role.java
+│   │   └── User.java
+│   ├── dto/
+│   ├── exception/
+│   │   └── GlobalExceptionHandler.java
+│   ├── rate_limit/
+│   │   ├── RateLimitConfig.java
+│   │   └── RateLimiterService.java
+│   ├── repository/
+│   │   ├── AiScoreEventRepository.java
+│   │   ├── ApiKeyRepository.java
+│   │   ├── ApiUsageBaselineRepository.java
+│   │   ├── BlockedEntityRepository.java
+│   │   ├── RateLimitPolicyRepository.java
+│   │   └── UserRepository.java
+│   ├── security/
+│   │   ├── ApiKeyAuthFilter.java
+│   │   ├── CustomUserDetailsService.java
+│   │   ├── SecurityConfig.java
+│   │   └── trys/
+│   ├── service/
+│   │   ├── ApiKeyService.java
+│   │   └── ApiGovernanceApplication.java
+│   └── ApiGovernanceApplication.java
+├── src/main/resources/
+│   ├── static/
+│   │   └── static.css
+│   ├── templates/
+│   │   ├── auth/
+│   │   │   └── login.html
+│   │   ├── fragments/
+│   │   │   └── layout.html
+│   │   ├── abuse.html
+│   │   ├── api-keys.html
+│   │   ├── dashboard.html
+│   │   ├── rate-limits.html
+│   │   └── application.yml
+│   └── application.yml
+└── ai-ml-service/              # Standalone ML module
+    ├── app.py                  # FastAPI application
+    ├── model.py                # Isolation Forest model
+    └── requirements.txt        # Python dependencies
 ```
 
 ---
