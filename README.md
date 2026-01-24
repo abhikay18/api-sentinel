@@ -4,7 +4,7 @@
 
 A backend-focused API governance and security platform built with Spring Boot that enforces rate limiting, abuse detection, and AI-assisted anomaly analysis for modern API ecosystems.
 
-[![Java](https://img.shields.io/badge/Java-17-orange.svg)](https://www.oracle.com/java/)
+[![Java](https://img.shields.io/badge/Java-21-orange.svg)](https://www.oracle.com/java/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-brightgreen.svg)](https://spring.io/projects/spring-boot)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Latest-blue.svg)](https://www.postgresql.org/)
 [![Redis](https://img.shields.io/badge/Redis-Latest-red.svg)](https://redis.io/)
