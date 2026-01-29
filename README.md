@@ -266,10 +266,10 @@ The model returns both a binary anomaly flag and a continuous risk score for exp
 ![Dashboard](screenshots/dashboard.png)
 
 ### API Key Management
-![Baseline Controls](screenshots/api-key.png)
+![API Key Management](screenshots/api-key.png)
 
 ### Rate Limit Configuration
-![Baseline Controls](screenshots/RLC.png)
+![Rate Limit Configuration](screenshots/RLC.png)
 
 ### Abuse Monitor with AI Explanation
 ![Abuse Monitor](screenshots/abuse-monitor.png)
